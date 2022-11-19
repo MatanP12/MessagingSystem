@@ -50,32 +50,32 @@ class MessageDetailApiView(APIView):
         try:
             message = Message.objects.get(Q(id=message_id) & 
                         (Q(sender = user_id) | Q(receiver=user_id)))
-            message.is_readed = True;
-            message.save();
             return message;
         except Message.DoesNotExist:
             return None
 
-    def get(self, request, message_id):
+    def put(self, request, message_id):
         #Retrieves the Message with given message_id
         message = self.get_object(message_id, request.user.id)
         if not message:
             return Response(
-                {"res": "Object with message_id does not exists"},
+                {"res": "Message with message_id does not exists"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-
+        message.is_readed = True;
+        message.save();    
         serializer = MessageSerializer(message)
         return Response(serializer.data, status=status.HTTP_200_OK)
         
     def delete(self, request, message_id):
-    # Delete the message with the given message_id
+        # Delete the message with the given message_id
         message = self.get_object(message_id, request.user.id)
         if not message:
             return Response(
-                {"res": "Object with message_id does not exists"},
+                {"res": "Message with message_id does not exists"},
                 status=status.HTTP_400_BAD_REQUEST
             )
         serializer = MessageSerializer(message)
+        response = Response(serializer.data, status=status.HTTP_200_OK)
         message.delete()
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return response
