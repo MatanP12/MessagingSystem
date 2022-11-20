@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate
-
+from django.contrib.auth.models import User
 from rest_framework import serializers
 
 class LoginSerializer(serializers.Serializer):
@@ -36,6 +36,11 @@ class LoginSerializer(serializers.Serializer):
             msg = 'Both "username" and "password" are required.'
             raise serializers.ValidationError(msg, code='authorization')
         # We have a valid user, put it in the serializer's validated_data.
-        # It will be used in the view.
         attrs['user'] = user
         return attrs
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "username", "first_name", "last_name","email"]
