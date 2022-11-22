@@ -3,7 +3,9 @@ from .models import Message
 from django.contrib.auth.models import User
 
 class MessageSerializer(serializers.ModelSerializer):
-
+    '''
+        A serializer that handles serialization of the Message model
+    '''
     sender = serializers.CharField(source="sender.username")
     receiver = serializers.CharField(source="receiver.username")
     
@@ -15,13 +17,14 @@ class MessageSerializer(serializers.ModelSerializer):
     def validate(self, data):
         sender = data['sender']
         receiver = data['receiver']
+        if not User.objects.filter(username=receiver['username']).exists():
+            raise serializers.ValidationError({'receiver':'There is no user with username ' + receiver['username']})
         if sender == receiver:
-            raise serializers.ValidationError({'Sender':'Cannot send message to yourself'})
+            raise serializers.ValidationError({'sender':'Cannot send message to yourself'})
         return data
         
     def create(self, validated_data):
-        validated_data['sender'] = User.objects.get(id = validated_data['sender']['username'])
-        validated_data['receiver'] = User.objects.get(id = validated_data['receiver']['username'])
-        #raise serializers.ValidationError({'Sender':validated_data})
+        validated_data['sender'] = User.objects.get(username = validated_data['sender']['username'])
+        validated_data['receiver'] = User.objects.get(username = validated_data['receiver']['username'])
         message = Message.objects.create(**validated_data)
         return message;
