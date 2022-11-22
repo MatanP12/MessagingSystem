@@ -1,0 +1,729 @@
+{
+	"info": {
+		"_postman_id": "6859902d-8451-43bc-a647-7d05eaca9265",
+		"name": "Messaging System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13557671"
+	},
+	"item": [
+		{
+			"name": "Login with MotiLuchim",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"X-CSRFToken\", pm.cookies.get(\"csrftoken\")) \r",
+							"pm.test(\"login successfull\", ()=>{\r",
+							"    pm.response.to.have.status(202);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "MotiLuchim",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "moti1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send message from Moti to Moti",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"didn't send a message\", ()=>{\r",
+							"    pm.response.to.have.status(400);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "subject",
+							"value": "First message",
+							"type": "text"
+						},
+						{
+							"key": "message",
+							"value": "This is my first message!!",
+							"type": "text"
+						},
+						{
+							"key": "receiver",
+							"value": "MotiLuchim",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/messages/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"messages",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send message to KerenLaser",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"successfully send message\", ()=>{\r",
+							"    pm.response.to.have.status(201);\r",
+							"    let responseData = pm.response.json();\r",
+							"    pm.collectionVariables.set(\"moti_message_id\", responseData.id)\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "subject",
+							"value": "First message",
+							"type": "text"
+						},
+						{
+							"key": "message",
+							"value": "This is my first message!!",
+							"type": "text"
+						},
+						{
+							"key": "receiver",
+							"value": "KerenLaser",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/messages/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"messages",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login with KerenLaser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"X-CSRFToken\", pm.cookies.get(\"csrftoken\")) \r",
+							"pm.test(\"login successfull\", ()=>{\r",
+							"    pm.response.to.have.status(202);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "KerenLaser",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "keren1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get new messages",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"new messages only\", ()=>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "admin1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/messages/new",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"messages",
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read Moti's message",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Read Moti's message\", ()=>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{url}}/messages/{{moti_message_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"messages",
+						"{{moti_message_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send message back to Moti",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"successfully send message\", ()=>{\r",
+							"    pm.response.to.have.status(201);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "subject",
+							"value": "Hi Moti",
+							"type": "text"
+						},
+						{
+							"key": "message",
+							"value": "Thank you for the message!",
+							"type": "text"
+						},
+						{
+							"key": "receiver",
+							"value": "MotiLuchim",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/messages/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"messages",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Acciddently send the message twice",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"successfully send message\", ()=>{\r",
+							"    pm.response.to.have.status(201);\r",
+							"    let responseData = pm.response.json();\r",
+							"    pm.collectionVariables.set(\"keren_accident_message_id\", responseData.id)\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "subject",
+							"value": "Hi Moti",
+							"type": "text"
+						},
+						{
+							"key": "message",
+							"value": "Opps I'he sent the message again ",
+							"type": "text"
+						},
+						{
+							"key": "receiver",
+							"value": "MotiLuchim",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/messages/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"messages",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send message to an invalid user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"didn't send a message\", ()=>{\r",
+							"    pm.response.to.have.status(400);\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "subject",
+							"value": "Hi BlaBla",
+							"type": "text"
+						},
+						{
+							"key": "message",
+							"value": "Are you exist?",
+							"type": "text"
+						},
+						{
+							"key": "receiver",
+							"value": "BlaBla",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/messages/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"messages",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Keren's messages",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"all messages\", ()=>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "admin1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/messages",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"messages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete message from Moti",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successfully deleted Moti's message\", ()=>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "admin1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/messages/{{moti_message_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"messages",
+						"{{moti_message_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete message send by accident",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successfully deleted my accidential message\", ()=>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "admin1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/messages/{{keren_accident_message_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"messages",
+						"{{keren_accident_message_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read deleted message",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Can't read a deleted message\", ()=>{\r",
+							"    pm.response.to.have.status(400);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "admin1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/messages/{{moti_message_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"messages",
+						"{{moti_message_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"if(pm.collectionVariables.get(\"X-CSRFToken\") != false){",
+					"    pm.request.headers.add({",
+					"    key: \"X-CSRFToken\",",
+					"    value: pm.collectionVariables.get(\"X-CSRFToken\")",
+					"})",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "X-CSRFToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "moti_message_id",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "keren_accident_message_id",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "url",
+			"value": "localhost:8000",
+			"type": "string"
+		}
+	]
+}
