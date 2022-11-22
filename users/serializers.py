@@ -3,12 +3,12 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 class LoginSerializer(serializers.Serializer):
-    """
-    This serializer defines two fields for authentication:
-      * username
-      * password.
-    It will try to authenticate the user with when validated.
-    """
+    '''
+        This serializer defines two fields for authentication:
+          * username
+          * password.
+        It will try to authenticate the user with when validated.
+    '''
     username = serializers.CharField(
         label="Username",
         write_only=True
@@ -20,7 +20,9 @@ class LoginSerializer(serializers.Serializer):
     )
 
     def validate(self, attrs):
-        # Take username and password from request
+        '''
+            Take username and password from request and authenticate them
+        '''
         username = attrs.get('username')
         password = attrs.get('password')
 
